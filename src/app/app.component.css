@@ -1,5 +1,4 @@
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+.page {
+  padding: 80px;
+  margin: 0 auto;
 }
