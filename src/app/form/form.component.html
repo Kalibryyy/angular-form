@@ -1,22 +1,22 @@
-<form class="form">
+<form class="form" [formGroup]="form" (ngSubmit)="submit()">
   <h1 class="form__title">Sign Up</h1>
   <p>Fill all the fields</p>
 
-  <fieldset class="form__fieldset">
+  <fieldset class="form__fieldset" formGroupName="account">
     <h2>Account</h2>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Email" type="email" value="Email" required>
+      <input matInput type="email" formControlName="email" required>
 <!--      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Password" type="password" required>
+      <input matInput placeholder="Password" type="password" formControlName="password" required>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Password" type="password" required>
+      <input matInput placeholder="Password" type="password" formControlName="password" required>
     </mat-form-field>
   </fieldset>
 
-  <fieldset class="form__fieldset">
+  <fieldset class="form__fieldset" formGroupName="profile">
     <h2>Profile</h2>
     <mat-form-field appearance="standard">
       <input matInput placeholder="Name" type="text">
@@ -42,13 +42,13 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="number" value="Taxpayer Identification Number (INN)" required>
+      <input matInput type="text" placeholder="Taxpayer Identification Number (INN)" required>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="number" value="Tax Registration Reason Code (KPP)" required>
+      <input matInput type="text" placeholder="Tax Registration Reason Code (KPP)" required>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="number" value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" required>
+      <input matInput type="text" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" required>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <input matInput placeholder="Date" type="date">
@@ -70,8 +70,8 @@
 
   <div class="form__add-contacts-container">
     <h2>Contacts</h2>
-    <button type="button" class="form__add-btn">Add contact</button>
+    <button type="button" mat-stroked-button>Add contact</button>
   </div>
-  <button type="submit" class="form__signup-btn">Sign up</button>
+  <button type="submit" mat-flat-button color="primary">Sign up</button>
 </form>
 
