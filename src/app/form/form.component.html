@@ -5,66 +5,66 @@
   <fieldset class="form__fieldset" formGroupName="account">
     <h2>Account</h2>
     <mat-form-field appearance="standard">
-      <input matInput type="email" formControlName="email" required>
-<!--      <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error>-->
+      <input matInput type="email" formControlName="email">
+      <mat-error *ngIf="form.get('account.email')?.invalid">{{getErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Password" type="password" formControlName="password" required>
+      <input matInput placeholder="Password" type="password" formControlName="password">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Password" type="password" formControlName="password" required>
+      <input matInput placeholder="Password" type="password" formControlName="password">
     </mat-form-field>
   </fieldset>
 
   <fieldset class="form__fieldset" formGroupName="profile">
     <h2>Profile</h2>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Name" type="text">
+      <input matInput placeholder="Name" type="text" formControlName="name">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Phone" type="tel">
+      <input matInput placeholder="Phone" type="tel" formControlName="phone">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="City" type="text">
+      <input matInput placeholder="City" type="text" formControlName="city">
     </mat-form-field>
   </fieldset>
 
-  <fieldset class="form__fieldset">
+  <fieldset class="form__fieldset" formGroupName="company">
     <h2>Company</h2>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Name" type="text" required>
+      <input matInput placeholder="Name" type="text" formControlName="name">
     </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
-      <mat-select required>
+      <mat-select formControlName="ownership">
         <mat-option value="one">Legal Entity</mat-option>
         <mat-option value="two">Individual Entrepreneur</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="text" placeholder="Taxpayer Identification Number (INN)" required>
+      <input matInput type="text" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="text" placeholder="Tax Registration Reason Code (KPP)" required>
+      <input matInput type="text" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="text" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" required>
+      <input matInput type="text" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" formControlName="okpo">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Date" type="date">
+      <input matInput placeholder="Date" type="date" formControlName="date">
     </mat-form-field>
   </fieldset>
 
-  <fieldset class="form__fieldset">
+  <fieldset class="form__fieldset" formGroupName="contacts">
     <h2>Contacts</h2>
     <mat-form-field appearance="standard">
-      <input matInput value="Name" type="text">
+      <input matInput type="text" formControlName="name">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput value="Job Title" type="text">
+      <input matInput type="text" formControlName="job">
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput value="Phone" type="tel">
+      <input matInput type="tel" formControlName="phone">
     </mat-form-field>
   </fieldset>
 
@@ -72,6 +72,6 @@
     <h2>Contacts</h2>
     <button type="button" mat-stroked-button>Add contact</button>
   </div>
-  <button type="submit" mat-flat-button color="primary">Sign up</button>
+  <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">Sign up</button>
 </form>
 
