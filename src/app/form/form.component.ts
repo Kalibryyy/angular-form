@@ -50,7 +50,7 @@ export class FormComponent {
     })
   });
 
-  getErrorMessage() {
+  getEmailErrorMessage() {
     if (this.form.get('account.email')?.hasError('required')) {
       return 'You must enter a value';
     }
@@ -60,6 +60,14 @@ export class FormComponent {
     }
 
     return this.form.get('account.email') ? 'Not a valid email' : '';
+  }
+
+  getPasswordErrorMessage() {
+    if (this.form.get('account.passwords')?.hasError('isNotEqual')) {
+      return 'Passwords are not equal';
+    }
+
+    return this.form.get('account.passwords') ? 'Not a valid password' : '';
   }
 
   submit() {

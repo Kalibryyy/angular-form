@@ -6,7 +6,7 @@
     <h2>Account</h2>
     <mat-form-field appearance="standard">
       <input matInput type="email" formControlName="email">
-      <mat-error *ngIf="form.get('account.email')?.invalid">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('account.email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
@@ -15,7 +15,7 @@
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
       </mat-form-field>
-      <mat-error *ngIf="form.get('account.passwords')?.invalid" class="error-text">{{getErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('account.passwords')?.invalid" class="error-text">{{getPasswordErrorMessage()}}</mat-error>
     </div>
   </fieldset>
 
