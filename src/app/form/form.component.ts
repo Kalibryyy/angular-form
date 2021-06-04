@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {MyValidators} from "../my.validators";
 
 @Component({
   selector: 'app-form',
@@ -8,16 +9,26 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 })
 export class FormComponent {
 
+
   form: FormGroup = new FormGroup({
     account: new FormGroup({
       email: new FormControl('Email', [
         Validators.required,
         Validators.email,
       ]),
-      password: new FormControl('Password', [
-        Validators.required,
-        Validators.minLength(6),
-      ]),
+      passwords: new FormGroup(
+        {
+          password: new FormControl('Password', [
+            Validators.required,
+            Validators.minLength(6),
+          ]),
+          confirmedPassword: new FormControl('Password', [
+            Validators.required,
+            Validators.minLength(6),
+          ]),
+        },
+        MyValidators.equalPasswords
+      )
     }),
     profile: new FormGroup({
       name: new FormControl('Name'),
@@ -44,6 +55,10 @@ export class FormComponent {
       return 'You must enter a value';
     }
 
+    if (this.form.get('account.passwords')?.hasError('isNotEqual')) {
+      return 'Passwords are not equal';
+    }
+
     return this.form.get('account.email') ? 'Not a valid email' : '';
   }
 
@@ -51,7 +66,6 @@ export class FormComponent {
     if (this.form.valid) {
       const formData = {...this.form.value};
       console.log('Form data: ', formData);
-      // console.log(this.form.get('account').get('email').value);
     }
   }
 }
