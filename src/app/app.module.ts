@@ -9,6 +9,10 @@ import {MatSelectModule} from "@angular/material/select";
 import { FormComponent } from './form/form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
+import { NgxMaskModule, IConfig } from 'ngx-mask';
+
+// @ts-ignore
+export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
 
 @NgModule({
   declarations: [
@@ -24,6 +28,7 @@ import {MatButtonModule} from "@angular/material/button";
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
+    NgxMaskModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent]
