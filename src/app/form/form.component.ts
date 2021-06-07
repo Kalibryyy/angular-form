@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../my.validators";
 
@@ -7,6 +7,7 @@ import {MyValidators} from "../my.validators";
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
+
 export class FormComponent {
 
   form: FormGroup = new FormGroup({
@@ -35,10 +36,20 @@ export class FormComponent {
       city: new FormControl('City',)
     }),
     company: new FormGroup({
-      name: new FormControl('Name'),
-      ownership: new FormControl('Ownership'),
-      inn: new FormControl('Taxpayer Identification Number (INN)'),
-      kpp: new FormControl('Tax Registration Reason Code (KPP)'),
+      name: new FormControl('Name', [
+        Validators.required,
+      ]),
+      ownership: new FormControl('Ownership', [
+        Validators.required,
+        ]),
+      inn: new FormControl('Taxpayer Identification Number (INN)', [
+        Validators.required,
+        Validators.minLength(9),
+      ]),
+      kpp: new FormControl('Tax Registration Reason Code (KPP)', [
+        Validators.required,
+        Validators.minLength(9),
+      ]),
       okpo: new FormControl('All-Russian Classifier of Entrepreneurs and Organizations (OKPO)'),
       date: new FormControl('Date')
     }),

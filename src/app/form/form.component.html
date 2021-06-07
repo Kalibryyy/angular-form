@@ -9,7 +9,6 @@
       <mat-error *ngIf="form.get('account.email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
 
-
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="password">
@@ -45,14 +44,14 @@
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
       <mat-select formControlName="ownership">
-        <mat-option value="one">Legal Entity</mat-option>
-        <mat-option value="two">Individual Entrepreneur</mat-option>
+        <mat-option value="Legal Entity">Legal Entity</mat-option>
+        <mat-option value="Individual Entrepreneur">Individual Entrepreneur</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <input matInput type="text" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
     </mat-form-field>
-    <mat-form-field appearance="standard">
+    <mat-form-field *ngIf="form.value.company.ownership !== 'Individual Entrepreneur'" appearance="standard">
       <input matInput type="text" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
     </mat-form-field>
     <mat-form-field appearance="standard">
