@@ -11,8 +11,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import { NgxMaskModule, IConfig } from 'ngx-mask';
 
-// @ts-ignore
-export const options: Partial<IConfig> | (() => Partial<IConfig>) = null;
+export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
 
 @NgModule({
   declarations: [

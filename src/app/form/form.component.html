@@ -8,16 +8,21 @@
       <input matInput type="email" formControlName="email">
       <mat-error *ngIf="form.get('account.email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
+
+
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="password">
+        <mat-error *ngIf="form.get('account.passwords.password')?.invalid">{{getPasswordErrorMessage()}}</mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
+        <mat-error *ngIf="form.get('account.passwords.confirmedPassword')?.invalid">{{getConfirmedPasswordErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-error *ngIf="form.get('account.passwords')?.invalid" class="error-text">{{getPasswordErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('account.passwords')?.invalid" class="error-text">{{getPasswordsErrorMessage()}}</mat-error>
     </div>
   </fieldset>
+<!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="profile">
     <h2>Profile</h2>

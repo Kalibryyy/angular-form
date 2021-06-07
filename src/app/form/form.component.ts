@@ -9,7 +9,6 @@ import {MyValidators} from "../my.validators";
 })
 export class FormComponent {
 
-
   form: FormGroup = new FormGroup({
     account: new FormGroup({
       email: new FormControl('Email', [
@@ -18,11 +17,11 @@ export class FormComponent {
       ]),
       passwords: new FormGroup(
         {
-          password: new FormControl('Password', [
+          password: new FormControl('', [
             Validators.required,
             Validators.minLength(6),
           ]),
-          confirmedPassword: new FormControl('Password', [
+          confirmedPassword: new FormControl('', [
             Validators.required,
             Validators.minLength(6),
           ]),
@@ -55,19 +54,35 @@ export class FormComponent {
       return 'You must enter a value';
     }
 
-    if (this.form.get('account.passwords')?.hasError('isNotEqual')) {
-      return 'Passwords are not equal';
-    }
-
     return this.form.get('account.email') ? 'Not a valid email' : '';
   }
 
   getPasswordErrorMessage() {
-    if (this.form.get('account.passwords')?.hasError('isNotEqual')) {
+    if (this.form.get('account.passwords.password')?.hasError('required')) {
+      return 'You must enter a value';
+    } else if (this.form.get('account.passwords.password')?.errors?.minlength) {
+      return 'The password has to be minimum 6 characters long';
+    }
+
+    return this.form.get('account.passwords.password') ? 'Not a valid password' : '';
+  }
+
+  getConfirmedPasswordErrorMessage() {
+    if (this.form.get('account.passwords.confirmedPassword')?.hasError('required')) {
+      return 'You must enter a value';
+    } else if (this.form.get('account.passwords.confirmedPassword')?.errors?.minlength) {
+      return 'The password has to be minimum 6 characters long';
+    }
+
+    return this.form.get('account.passwords.confirmedPassword') ? 'Not a valid password' : '';
+  }
+
+  getPasswordsErrorMessage() {
+    if (this.form.get('account.passwords')?.hasError('isNotEqual') && !this.form.get('account.passwords.confirmedPassword')?.invalid) {
       return 'Passwords are not equal';
     }
 
-    return this.form.get('account.passwords') ? 'Not a valid password' : '';
+    return '';
   }
 
   submit() {
