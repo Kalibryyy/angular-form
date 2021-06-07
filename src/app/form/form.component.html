@@ -1,6 +1,6 @@
 <form class="form" [formGroup]="form" (ngSubmit)="submit()">
   <h1 class="form__title">Sign Up</h1>
-  <p>Fill all the fields</p>
+  <p>Fill-in all the fields</p>
 
   <fieldset class="form__fieldset" formGroupName="account">
     <h2>Account</h2>
@@ -8,7 +8,6 @@
       <input matInput type="email" formControlName="email">
       <mat-error *ngIf="form.get('account.email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
     </mat-form-field>
-
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="password">
@@ -36,10 +35,13 @@
     </mat-form-field>
   </fieldset>
 
+<!--  <pre>{{form.invalid | json}}</pre>-->
+
   <fieldset class="form__fieldset" formGroupName="company">
     <h2>Company</h2>
     <mat-form-field appearance="standard">
       <input matInput placeholder="Name" type="text" formControlName="name">
+      <mat-error *ngIf="form.get('company.name')?.invalid">{{getCompanyNameErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
@@ -47,22 +49,27 @@
         <mat-option value="Legal Entity">Legal Entity</mat-option>
         <mat-option value="Individual Entrepreneur">Individual Entrepreneur</mat-option>
       </mat-select>
+      <mat-error *ngIf="form.get('company.ownership')?.invalid">{{getOwnershipErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="text" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
+      <input matInput type="number" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
+      <mat-error *ngIf="form.get('company.inn')?.invalid">{{getInnErrorMessage()}}</mat-error>
     </mat-form-field>
+<!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
     <mat-form-field *ngIf="form.value.company.ownership !== 'Individual Entrepreneur'" appearance="standard">
-      <input matInput type="text" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
+      <input matInput type="number" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
+      <mat-error *ngIf="form.get('company.kpp')?.invalid">{{getKppErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="text" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" formControlName="okpo">
+      <input matInput type="number" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" formControlName="okpo" value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)">
+      <mat-error *ngIf="form.get('company.okpo')?.invalid">{{getOkpoErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <input matInput placeholder="Date" type="date" formControlName="date">
     </mat-form-field>
   </fieldset>
 
-  <fieldset class="form__fieldset" formGroupName="contacts">
+  <fieldset *ngIf="areContactsShown" class="form__fieldset" formGroupName="contacts">
     <h2>Contacts</h2>
     <mat-form-field appearance="standard">
       <input matInput type="text" formControlName="name">
@@ -77,7 +84,7 @@
 
   <div class="form__add-contacts-container">
     <h2>Contacts</h2>
-    <button type="button" mat-stroked-button>Add contact</button>
+    <button type="button" mat-stroked-button (click)="addContact()">Add contact</button>
   </div>
   <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">Sign up</button>
 </form>

@@ -10,6 +10,8 @@ import {MyValidators} from "../my.validators";
 
 export class FormComponent {
 
+  areContactsShown = false;
+
   form: FormGroup = new FormGroup({
     account: new FormGroup({
       email: new FormControl('Email', [
@@ -18,7 +20,7 @@ export class FormComponent {
       ]),
       passwords: new FormGroup(
         {
-          password: new FormControl('', [
+          password: new FormControl(null, [
             Validators.required,
             Validators.minLength(6),
           ]),
@@ -39,22 +41,27 @@ export class FormComponent {
       name: new FormControl('Name', [
         Validators.required,
       ]),
-      ownership: new FormControl('Ownership', [
+      ownership: new FormControl(null, [
         Validators.required,
         ]),
-      inn: new FormControl('Taxpayer Identification Number (INN)', [
+      inn: new FormControl(null, [
         Validators.required,
-        Validators.minLength(9),
+        Validators.pattern('[0-9]{9}')
       ]),
-      kpp: new FormControl('Tax Registration Reason Code (KPP)', [
+      kpp: new FormControl(null, [
         Validators.required,
-        Validators.minLength(9),
+        Validators.pattern('[0-9]{9}')
       ]),
-      okpo: new FormControl('All-Russian Classifier of Entrepreneurs and Organizations (OKPO)'),
+      okpo: new FormControl(null, [
+        Validators.required,
+        Validators.pattern('[0-9]{8}')
+      ]),
       date: new FormControl('Date')
     }),
     contacts: new FormGroup({
-      name: new FormControl('Name'),
+      name: new FormControl('Name', [
+          Validators.required,
+      ]),
       job: new FormControl('Job Title'),
       phone: new FormControl('Phone')
     })
@@ -96,10 +103,60 @@ export class FormComponent {
     return '';
   }
 
+  getCompanyNameErrorMessage() {
+    if (this.form.get('company.name')?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
+
+  getOwnershipErrorMessage() {
+    if (this.form.get('company.ownership')?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
+
+  getInnErrorMessage() {
+    if (this.form.get('company.inn')?.hasError('required')) {
+      return 'You must enter a value';
+    } else if (this.form.get('company.inn')?.errors?.pattern.requiredPattern) {
+      return 'The INN has to be 9 characters long';
+    }
+
+    return this.form.get('company.inn') ? 'Not a valid INN' : '';
+  }
+
+  getKppErrorMessage() {
+    if (this.form.get('company.kpp')?.hasError('required')) {
+      return 'You must enter a value';
+    } else if (this.form.get('company.kpp')?.errors?.pattern.requiredPattern) {
+      return 'The KPP has to be 9 characters long';
+    }
+
+    return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
+  }
+
+  getOkpoErrorMessage() {
+    if (this.form.get('company.okpo')?.hasError('required')) {
+      return 'You must enter a value';
+    } else if (this.form.get('company.okpo')?.errors?.pattern.requiredPattern) {
+      return 'The OKPO has to be 8 characters long';
+    }
+
+    return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
+  }
+
   submit() {
     if (this.form.valid) {
       const formData = {...this.form.value};
       console.log('Form data: ', formData);
     }
+  }
+
+  addContact() {
+    this.areContactsShown = true;
   }
 }
