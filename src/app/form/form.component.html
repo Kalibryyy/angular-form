@@ -15,12 +15,14 @@
       </mat-form-field>
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
-        <mat-error *ngIf="form.get('account.passwords.confirmedPassword')?.invalid">{{getConfirmedPasswordErrorMessage()}}</mat-error>
+        <mat-error
+          *ngIf="form.get('account.passwords.confirmedPassword')?.invalid">{{getConfirmedPasswordErrorMessage()}}</mat-error>
       </mat-form-field>
-      <mat-error *ngIf="form.get('account.passwords')?.invalid" class="error-text">{{getPasswordsErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('account.passwords')?.invalid"
+                 class="error-text">{{getPasswordsErrorMessage()}}</mat-error>
     </div>
   </fieldset>
-<!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
+  <!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="profile">
     <h2>Profile</h2>
@@ -35,7 +37,7 @@
     </mat-form-field>
   </fieldset>
 
-<!--  <pre>{{form.invalid | json}}</pre>-->
+  <!--  <pre>{{form.invalid | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="company">
     <h2>Company</h2>
@@ -55,13 +57,14 @@
       <input matInput type="number" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
       <mat-error *ngIf="form.get('company.inn')?.invalid">{{getInnErrorMessage()}}</mat-error>
     </mat-form-field>
-<!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
+    <!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
     <mat-form-field *ngIf="form.value.company.ownership !== 'Individual Entrepreneur'" appearance="standard">
       <input matInput type="number" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
       <mat-error *ngIf="form.get('company.kpp')?.invalid">{{getKppErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
-      <input matInput type="number" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)" formControlName="okpo" value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)">
+      <input matInput type="number" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)"
+             formControlName="okpo" value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)">
       <mat-error *ngIf="form.get('company.okpo')?.invalid">{{getOkpoErrorMessage()}}</mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
@@ -69,18 +72,25 @@
     </mat-form-field>
   </fieldset>
 
-  <fieldset *ngIf="areContactsShown" class="form__fieldset" formGroupName="contacts">
-    <h2>Contacts</h2>
-    <mat-form-field appearance="standard">
-      <input matInput type="text" formControlName="name">
-    </mat-form-field>
-    <mat-form-field appearance="standard">
-      <input matInput type="text" formControlName="job">
-    </mat-form-field>
-    <mat-form-field appearance="standard">
-      <input matInput type="tel" formControlName="phone">
-    </mat-form-field>
-  </fieldset>
+  <ng-container formArrayName="contacts">
+      <div *ngFor="let _ of contacts.controls; index as i">
+        <fieldset class="form__fieldset">
+          <h2>Contacts</h2>
+          <ng-container [formGroupName]="i">
+            <mat-form-field appearance="standard">
+              <input matInput type="text" formControlName="name">
+              <mat-error *ngIf="form.get('contacts.name')?.invalid">{{getContactsNameMessage()}}</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <input matInput type="text" formControlName="job">
+            </mat-form-field>
+            <mat-form-field appearance="standard">
+              <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
+            </mat-form-field>
+          </ng-container>
+        </fieldset>
+      </div>
+  </ng-container>
 
   <div class="form__add-contacts-container">
     <h2>Contacts</h2>

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormArrayName, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../my.validators";
 
 @Component({
@@ -43,7 +43,7 @@ export class FormComponent {
       ]),
       ownership: new FormControl(null, [
         Validators.required,
-        ]),
+      ]),
       inn: new FormControl(null, [
         Validators.required,
         Validators.pattern('[0-9]{9}')
@@ -58,14 +58,28 @@ export class FormComponent {
       ]),
       date: new FormControl('Date')
     }),
-    contacts: new FormGroup({
-      name: new FormControl('Name', [
-          Validators.required,
-      ]),
-      job: new FormControl('Job Title'),
-      phone: new FormControl('Phone')
-    })
+    contacts: new FormArray([]),
   });
+
+  get contacts() {
+    return this.form.get('contacts') as FormArray;
+  }
+
+  addContact() {
+    const group = new FormGroup({
+      name: new FormControl('Name', [
+        Validators.required,
+      ]),
+      job: new FormControl('Job Title', [
+        Validators.required,
+      ]),
+      phone: new FormControl('Phone', [
+        Validators.required,
+      ])
+    });
+
+    (this.form.get('contacts') as FormArray).push(group);
+  }
 
   getEmailErrorMessage() {
     if (this.form.get('account.email')?.hasError('required')) {
@@ -149,14 +163,19 @@ export class FormComponent {
     return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
   }
 
+  getContactsNameMessage() {
+    if (this.form.get('contacts.name')?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
+
+
   submit() {
     if (this.form.valid) {
       const formData = {...this.form.value};
       console.log('Form data: ', formData);
     }
-  }
-
-  addContact() {
-    this.areContactsShown = true;
   }
 }
