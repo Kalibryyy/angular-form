@@ -63,6 +63,7 @@ export class FormComponent {
 
   get contacts() {
     return this.form.get('contacts') as FormArray;
+    // this.form.removeControl()
   }
 
   addContact() {
@@ -163,8 +164,8 @@ export class FormComponent {
     return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
   }
 
-  getContactsNameMessage() {
-    if (this.form.get('contacts.name')?.hasError('required')) {
+  getContactsNameErrorMessage(i: any): string {
+    if (this.form.get(`contacts.${i}.name`)?.hasError('required')) {
       return 'You must enter a value';
     }
 
@@ -172,7 +173,7 @@ export class FormComponent {
   }
 
 
-  submit() {
+  submit(): void {
     if (this.form.valid) {
       const formData = {...this.form.value};
       console.log('Form data: ', formData);

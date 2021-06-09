@@ -73,23 +73,21 @@
   </fieldset>
 
   <ng-container formArrayName="contacts">
-      <div *ngFor="let _ of contacts.controls; index as i">
-        <fieldset class="form__fieldset">
-          <h2>Contacts</h2>
-          <ng-container [formGroupName]="i">
-            <mat-form-field appearance="standard">
-              <input matInput type="text" formControlName="name">
-              <mat-error *ngIf="form.get('contacts.name')?.invalid">{{getContactsNameMessage()}}</mat-error>
-            </mat-form-field>
-            <mat-form-field appearance="standard">
-              <input matInput type="text" formControlName="job">
-            </mat-form-field>
-            <mat-form-field appearance="standard">
-              <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
-            </mat-form-field>
-          </ng-container>
-        </fieldset>
-      </div>
+    <fieldset class="form__fieldset" *ngFor="let _ of contacts.controls; index as i">
+      <h2>Contacts</h2>
+      <ng-container [formGroupName]="i">
+        <mat-form-field appearance="standard">
+          <input matInput type="text" formControlName="name">
+          <mat-error *ngIf="form.get('contacts.' + i + '.name')?.invalid">{{getContactsNameErrorMessage(i)}}</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <input matInput type="text" formControlName="job">
+        </mat-form-field>
+        <mat-form-field appearance="standard">
+          <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
+        </mat-form-field>
+      </ng-container>
+    </fieldset>
   </ng-container>
 
   <div class="form__add-contacts-container">
