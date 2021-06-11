@@ -48,8 +48,8 @@
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
       <mat-select formControlName="ownership">
-        <mat-option value="Legal Entity">Legal Entity</mat-option>
-        <mat-option value="Individual Entrepreneur">Individual Entrepreneur</mat-option>
+        <mat-option [value]="CompanyTypes.LEGAL_ENTITY">{{CompanyTypesDisplayName[CompanyTypes.LEGAL_ENTITY]}}</mat-option>
+        <mat-option [value]="CompanyTypes.INDIVIDUAL_ENTREPRENEUR">{{CompanyTypesDisplayName[CompanyTypes.INDIVIDUAL_ENTREPRENEUR]}}</mat-option>
       </mat-select>
       <mat-error *ngIf="form.get('company.ownership')?.invalid">{{getOwnershipErrorMessage()}}</mat-error>
     </mat-form-field>
@@ -58,7 +58,8 @@
       <mat-error *ngIf="form.get('company.inn')?.invalid">{{getInnErrorMessage()}}</mat-error>
     </mat-form-field>
     <!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
-    <mat-form-field *ngIf="form.value.company.ownership !== 'Individual Entrepreneur'" appearance="standard">
+
+    <mat-form-field *ngIf="form.value.company.ownership !== CompanyTypes.INDIVIDUAL_ENTREPRENEUR" appearance="standard">
       <input matInput type="number" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
       <mat-error *ngIf="form.get('company.kpp')?.invalid">{{getKppErrorMessage()}}</mat-error>
     </mat-form-field>
@@ -82,9 +83,11 @@
         </mat-form-field>
         <mat-form-field appearance="standard">
           <input matInput type="text" formControlName="job">
+          <mat-error *ngIf="form.get('contacts.' + i + '.job')?.invalid">{{getContactsJobErrorMessage(i)}}</mat-error>
         </mat-form-field>
         <mat-form-field appearance="standard">
           <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
+          <mat-error *ngIf="form.get('contacts.' + i + '.phone')?.invalid">{{getContactsPhoneErrorMessage(i)}}</mat-error>
         </mat-form-field>
       </ng-container>
     </fieldset>

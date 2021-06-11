@@ -1,6 +1,7 @@
-import {Component} from '@angular/core';
-import {FormArray, FormArrayName, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MyValidators} from "../my.validators";
+import {Component, OnInit,} from '@angular/core';
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {MyValidators} from "../../my.validators";
+import { CompanyTypes, CompanyTypesDisplayName } from "../../constants";
 
 @Component({
   selector: 'app-form',
@@ -8,9 +9,10 @@ import {MyValidators} from "../my.validators";
   styleUrls: ['./form.component.css']
 })
 
-export class FormComponent {
+export class FormComponent implements OnInit {
 
-  areContactsShown = false;
+  CompanyTypes = CompanyTypes;
+  CompanyTypesDisplayName = CompanyTypesDisplayName;
 
   form: FormGroup = new FormGroup({
     account: new FormGroup({
@@ -41,7 +43,7 @@ export class FormComponent {
       name: new FormControl('Name', [
         Validators.required,
       ]),
-      ownership: new FormControl(null, [
+      ownership: new FormControl('Legal Entity', [
         Validators.required,
       ]),
       inn: new FormControl(null, [
@@ -61,9 +63,23 @@ export class FormComponent {
     contacts: new FormArray([]),
   });
 
+  ngOnInit() {
+    this.form.get('company.ownership')?.valueChanges.subscribe(selectedValue => {
+      if (selectedValue === CompanyTypes.INDIVIDUAL_ENTREPRENEUR) {
+        (this.form.get('company') as FormGroup).removeControl('kpp');
+      } else {
+        const control = new FormControl(null, [
+          Validators.required,
+          Validators.pattern('[0-9]{9}')
+        ]);
+
+        (this.form.get('company') as FormGroup).addControl('kpp', control);
+      }
+    })
+  }
+
   get contacts() {
     return this.form.get('contacts') as FormArray;
-    // this.form.removeControl()
   }
 
   addContact() {
@@ -74,12 +90,14 @@ export class FormComponent {
       job: new FormControl('Job Title', [
         Validators.required,
       ]),
-      phone: new FormControl('Phone', [
+      phone: new FormControl(null, [
         Validators.required,
       ])
     });
 
     (this.form.get('contacts') as FormArray).push(group);
+
+    this.form.removeControl('company.name')
   }
 
   getEmailErrorMessage() {
@@ -100,7 +118,7 @@ export class FormComponent {
     return this.form.get('account.passwords.password') ? 'Not a valid password' : '';
   }
 
-  getConfirmedPasswordErrorMessage() {
+  getConfirmedPasswordErrorMessage(): string {
     if (this.form.get('account.passwords.confirmedPassword')?.hasError('required')) {
       return 'You must enter a value';
     } else if (this.form.get('account.passwords.confirmedPassword')?.errors?.minlength) {
@@ -110,7 +128,7 @@ export class FormComponent {
     return this.form.get('account.passwords.confirmedPassword') ? 'Not a valid password' : '';
   }
 
-  getPasswordsErrorMessage() {
+  getPasswordsErrorMessage(): string {
     if (this.form.get('account.passwords')?.hasError('isNotEqual') && !this.form.get('account.passwords.confirmedPassword')?.invalid) {
       return 'Passwords are not equal';
     }
@@ -118,7 +136,7 @@ export class FormComponent {
     return '';
   }
 
-  getCompanyNameErrorMessage() {
+  getCompanyNameErrorMessage(): string {
     if (this.form.get('company.name')?.hasError('required')) {
       return 'You must enter a value';
     }
@@ -126,7 +144,7 @@ export class FormComponent {
     return '';
   }
 
-  getOwnershipErrorMessage() {
+  getOwnershipErrorMessage(): string {
     if (this.form.get('company.ownership')?.hasError('required')) {
       return 'You must enter a value';
     }
@@ -134,7 +152,7 @@ export class FormComponent {
     return '';
   }
 
-  getInnErrorMessage() {
+  getInnErrorMessage(): string {
     if (this.form.get('company.inn')?.hasError('required')) {
       return 'You must enter a value';
     } else if (this.form.get('company.inn')?.errors?.pattern.requiredPattern) {
@@ -144,7 +162,7 @@ export class FormComponent {
     return this.form.get('company.inn') ? 'Not a valid INN' : '';
   }
 
-  getKppErrorMessage() {
+  getKppErrorMessage(): string {
     if (this.form.get('company.kpp')?.hasError('required')) {
       return 'You must enter a value';
     } else if (this.form.get('company.kpp')?.errors?.pattern.requiredPattern) {
@@ -154,7 +172,7 @@ export class FormComponent {
     return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
   }
 
-  getOkpoErrorMessage() {
+  getOkpoErrorMessage(): string {
     if (this.form.get('company.okpo')?.hasError('required')) {
       return 'You must enter a value';
     } else if (this.form.get('company.okpo')?.errors?.pattern.requiredPattern) {
@@ -164,7 +182,7 @@ export class FormComponent {
     return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
   }
 
-  getContactsNameErrorMessage(i: any): string {
+  getContactsNameErrorMessage(i: number): string {
     if (this.form.get(`contacts.${i}.name`)?.hasError('required')) {
       return 'You must enter a value';
     }
@@ -172,6 +190,21 @@ export class FormComponent {
     return '';
   }
 
+  getContactsJobErrorMessage(i: number): string {
+    if (this.form.get(`contacts.${i}.job`)?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
+
+  getContactsPhoneErrorMessage(i: number): string {
+    if (this.form.get(`contacts.${i}.phone`)?.hasError('required')) {
+      return 'You must enter a value';
+    }
+
+    return '';
+  }
 
   submit(): void {
     if (this.form.valid) {
