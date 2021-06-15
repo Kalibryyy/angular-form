@@ -1,7 +1,7 @@
 import {Component, OnInit,} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 import {MyValidators} from "../../my.validators";
-import { CompanyTypes, CompanyTypesDisplayName } from "../../constants";
+import {CompanyTypes, CompanyTypesDisplayName, ValidationErrorTexts} from "../../constants";
 
 @Component({
   selector: 'app-form',
@@ -13,6 +13,7 @@ export class FormComponent implements OnInit {
 
   CompanyTypes = CompanyTypes;
   CompanyTypesDisplayName = CompanyTypesDisplayName;
+  ValidationErrorTexts = ValidationErrorTexts;
 
   form: FormGroup = new FormGroup({
     account: new FormGroup({
@@ -63,26 +64,32 @@ export class FormComponent implements OnInit {
     contacts: new FormArray([]),
   });
 
-  ngOnInit() {
+  toggleControl(): void {
     this.form.get('company.ownership')?.valueChanges.subscribe(selectedValue => {
-      if (selectedValue === CompanyTypes.INDIVIDUAL_ENTREPRENEUR) {
-        (this.form.get('company') as FormGroup).removeControl('kpp');
-      } else {
-        const control = new FormControl(null, [
-          Validators.required,
-          Validators.pattern('[0-9]{9}')
-        ]);
+      switch (selectedValue) {
+        case CompanyTypes.INDIVIDUAL_ENTREPRENEUR:
+          (this.form.get('company') as FormGroup).removeControl('kpp');
+          break;
+        case  CompanyTypes.LEGAL_ENTITY:
+          const control = new FormControl(null, [
+            Validators.required,
+            Validators.pattern('[0-9]{9}')
+          ]);
 
-        (this.form.get('company') as FormGroup).addControl('kpp', control);
+          (this.form.get('company') as FormGroup).addControl('kpp', control);
       }
     })
   }
 
-  get contacts() {
+  ngOnInit() {
+    this.toggleControl();
+  }
+
+  get contacts(): FormArray {
     return this.form.get('contacts') as FormArray;
   }
 
-  addContact() {
+  addContact(): void {
     const group = new FormGroup({
       name: new FormControl('Name', [
         Validators.required,
@@ -96,41 +103,39 @@ export class FormComponent implements OnInit {
     });
 
     (this.form.get('contacts') as FormArray).push(group);
-
-    this.form.removeControl('company.name')
   }
 
-  getEmailErrorMessage() {
+  getEmailErrorMessage(): string {
     if (this.form.get('account.email')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
-    return this.form.get('account.email') ? 'Not a valid email' : '';
+    return this.form.get('account.email') ? ValidationErrorTexts.EMAIL_NOT_VALID : '';
   }
 
-  getPasswordErrorMessage() {
+  getPasswordErrorMessage(): string {
     if (this.form.get('account.passwords.password')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     } else if (this.form.get('account.passwords.password')?.errors?.minlength) {
-      return 'The password has to be minimum 6 characters long';
+      return ValidationErrorTexts.PASSWORD_MINLENGTH;
     }
 
-    return this.form.get('account.passwords.password') ? 'Not a valid password' : '';
+    return this.form.get('account.passwords.password') ? ValidationErrorTexts.PASSWORD_NOT_VALID : '';
   }
 
   getConfirmedPasswordErrorMessage(): string {
     if (this.form.get('account.passwords.confirmedPassword')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     } else if (this.form.get('account.passwords.confirmedPassword')?.errors?.minlength) {
-      return 'The password has to be minimum 6 characters long';
+      return ValidationErrorTexts.PASSWORD_MINLENGTH;
     }
 
-    return this.form.get('account.passwords.confirmedPassword') ? 'Not a valid password' : '';
+    return this.form.get('account.passwords.confirmedPassword') ? ValidationErrorTexts.PASSWORD_NOT_VALID : '';
   }
 
   getPasswordsErrorMessage(): string {
     if (this.form.get('account.passwords')?.hasError('isNotEqual') && !this.form.get('account.passwords.confirmedPassword')?.invalid) {
-      return 'Passwords are not equal';
+      return ValidationErrorTexts.PASSWORDS_NOT_EQUAL;
     }
 
     return '';
@@ -138,7 +143,7 @@ export class FormComponent implements OnInit {
 
   getCompanyNameErrorMessage(): string {
     if (this.form.get('company.name')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
     return '';
@@ -146,7 +151,7 @@ export class FormComponent implements OnInit {
 
   getOwnershipErrorMessage(): string {
     if (this.form.get('company.ownership')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
     return '';
@@ -154,37 +159,37 @@ export class FormComponent implements OnInit {
 
   getInnErrorMessage(): string {
     if (this.form.get('company.inn')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     } else if (this.form.get('company.inn')?.errors?.pattern.requiredPattern) {
-      return 'The INN has to be 9 characters long';
+      return ValidationErrorTexts.INN_MINLENGTH;
     }
 
-    return this.form.get('company.inn') ? 'Not a valid INN' : '';
+    return this.form.get('company.inn') ? ValidationErrorTexts.INN_NOT_VALID : '';
   }
 
   getKppErrorMessage(): string {
     if (this.form.get('company.kpp')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     } else if (this.form.get('company.kpp')?.errors?.pattern.requiredPattern) {
-      return 'The KPP has to be 9 characters long';
+      return ValidationErrorTexts.KPP_MINLENGTH;
     }
 
-    return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
+    return this.form.get('company.kpp') ? ValidationErrorTexts.KPP_NOT_VALID : '';
   }
 
   getOkpoErrorMessage(): string {
     if (this.form.get('company.okpo')?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     } else if (this.form.get('company.okpo')?.errors?.pattern.requiredPattern) {
-      return 'The OKPO has to be 8 characters long';
+      return ValidationErrorTexts.OKPO_MINLENGTH;
     }
 
-    return this.form.get('company.kpp') ? 'Not a valid KPP' : '';
+    return this.form.get('company.kpp') ? ValidationErrorTexts.OKPO_NOT_VALID : '';
   }
 
   getContactsNameErrorMessage(i: number): string {
     if (this.form.get(`contacts.${i}.name`)?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
     return '';
@@ -192,7 +197,7 @@ export class FormComponent implements OnInit {
 
   getContactsJobErrorMessage(i: number): string {
     if (this.form.get(`contacts.${i}.job`)?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
     return '';
@@ -200,7 +205,7 @@ export class FormComponent implements OnInit {
 
   getContactsPhoneErrorMessage(i: number): string {
     if (this.form.get(`contacts.${i}.phone`)?.hasError('required')) {
-      return 'You must enter a value';
+      return ValidationErrorTexts.NO_VALUE;
     }
 
     return '';
