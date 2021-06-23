@@ -6,12 +6,21 @@
     <h2>Account</h2>
     <mat-form-field appearance="standard">
       <input matInput type="email" formControlName="email">
-      <mat-error *ngIf="form.get('account.email')?.invalid">{{getEmailErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('account.email')?.hasError('required')">
+        {{ValidationErrorTexts.NO_VALUE}}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.email')?.invalid">
+        {{ValidationErrorTexts.EMAIL_NOT_VALID}}
+      </mat-error>
     </mat-form-field>
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="password">
-        <mat-error *ngIf="form.get('account.passwords.password')?.invalid">{{getPasswordErrorMessage()}}</mat-error>
+        <mat-error
+          *ngIf="form.get('account.passwords.password')?.invalid"
+        >
+          {{getPasswordErrorMessage()}}
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
@@ -48,8 +57,10 @@
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
       <mat-select formControlName="ownership">
-        <mat-option [value]="CompanyTypes.LEGAL_ENTITY">{{CompanyTypesDisplayName[CompanyTypes.LEGAL_ENTITY]}}</mat-option>
-        <mat-option [value]="CompanyTypes.INDIVIDUAL_ENTREPRENEUR">{{CompanyTypesDisplayName[CompanyTypes.INDIVIDUAL_ENTREPRENEUR]}}</mat-option>
+        <mat-option
+          [value]="CompanyTypes.LEGAL_ENTITY">{{CompanyTypesDisplayName[CompanyTypes.LEGAL_ENTITY]}}</mat-option>
+        <mat-option
+          [value]="CompanyTypes.INDIVIDUAL_ENTREPRENEUR">{{CompanyTypesDisplayName[CompanyTypes.INDIVIDUAL_ENTREPRENEUR]}}</mat-option>
       </mat-select>
       <mat-error *ngIf="form.get('company.ownership')?.invalid">{{getOwnershipErrorMessage()}}</mat-error>
     </mat-form-field>
@@ -87,7 +98,8 @@
         </mat-form-field>
         <mat-form-field appearance="standard">
           <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
-          <mat-error *ngIf="form.get('contacts.' + i + '.phone')?.invalid">{{getContactsPhoneErrorMessage(i)}}</mat-error>
+          <mat-error
+            *ngIf="form.get('contacts.' + i + '.phone')?.invalid">{{getContactsPhoneErrorMessage(i)}}</mat-error>
         </mat-form-field>
       </ng-container>
     </fieldset>
