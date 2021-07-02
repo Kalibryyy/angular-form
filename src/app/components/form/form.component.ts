@@ -1,7 +1,7 @@
 import {Component, OnInit,} from '@angular/core';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
-import {MyValidators} from "../../my.validators";
-import {CompanyTypes, CompanyTypesDisplayName, ValidationErrorTexts} from "../../constants";
+import {MyValidators} from "../../validators/my.validators";
+import {CompanyTypes, CompanyTypesDisplayName, ValidationErrorTexts} from "../../enums/constants";
 
 @Component({
   selector: 'app-form',
@@ -103,78 +103,6 @@ export class FormComponent implements OnInit {
     });
 
     (this.form.get('contacts') as FormArray).push(group);
-  }
-
-  getEmailErrorMessage(): string {
-    if (this.form.get('account.email')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return this.form.get('account.email') ? ValidationErrorTexts.EMAIL_NOT_VALID : '';
-  }
-
-  getPasswordErrorMessage(): string {
-    if (this.form.get('account.passwords.password')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    } else if (this.form.get('account.passwords.password')?.errors?.minlength) {
-      return ValidationErrorTexts.PASSWORD_MINLENGTH;
-    }
-
-    return this.form.get('account.passwords.password') ? ValidationErrorTexts.PASSWORD_NOT_VALID : '';
-  }
-
-  getConfirmedPasswordErrorMessage(): string {
-    if (this.form.get('account.passwords.confirmedPassword')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    } else if (this.form.get('account.passwords.confirmedPassword')?.errors?.minlength) {
-      return ValidationErrorTexts.PASSWORD_MINLENGTH;
-    }
-
-    return this.form.get('account.passwords.confirmedPassword') ? ValidationErrorTexts.PASSWORD_NOT_VALID : '';
-  }
-
-  getPasswordsErrorMessage(): string {
-    if (this.form.get('account.passwords')?.hasError('isNotEqual') && !this.form.get('account.passwords.confirmedPassword')?.invalid) {
-      return ValidationErrorTexts.PASSWORDS_NOT_EQUAL;
-    }
-
-    return '';
-  }
-
-  getCompanyNameErrorMessage(): string {
-    if (this.form.get('company.name')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return '';
-  }
-
-  getOwnershipErrorMessage(): string {
-    if (this.form.get('company.ownership')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return '';
-  }
-
-  getInnErrorMessage(): string {
-    if (this.form.get('company.inn')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    } else if (this.form.get('company.inn')?.errors?.pattern.requiredPattern) {
-      return ValidationErrorTexts.INN_MINLENGTH;
-    }
-
-    return this.form.get('company.inn') ? ValidationErrorTexts.INN_NOT_VALID : '';
-  }
-
-  getKppErrorMessage(): string {
-    if (this.form.get('company.kpp')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    } else if (this.form.get('company.kpp')?.errors?.pattern.requiredPattern) {
-      return ValidationErrorTexts.KPP_MINLENGTH;
-    }
-
-    return this.form.get('company.kpp') ? ValidationErrorTexts.KPP_NOT_VALID : '';
   }
 
   getOkpoErrorMessage(): string {

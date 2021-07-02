@@ -7,28 +7,58 @@
     <mat-form-field appearance="standard">
       <input matInput type="email" formControlName="email">
       <mat-error *ngIf="form.get('account.email')?.hasError('required')">
-        {{ValidationErrorTexts.NO_VALUE}}
+        {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
-      <mat-error *ngIf="form.get('account.email')?.invalid">
-        {{ValidationErrorTexts.EMAIL_NOT_VALID}}
+      <mat-error *ngIf="form.get('account.email')?.invalid && !form.get('account.email')?.hasError('required')">
+        {{ ValidationErrorTexts.EMAIL_NOT_VALID }}
       </mat-error>
     </mat-form-field>
     <div formGroupName="passwords">
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="password">
         <mat-error
-          *ngIf="form.get('account.passwords.password')?.invalid"
+          *ngIf="form.get('account.passwords.password')?.hasError('required')">
+          {{ ValidationErrorTexts.NO_VALUE }}
+        </mat-error>
+        <mat-error
+          *ngIf="form.get('account.passwords.password')?.errors?.minlength
+          && !form.get('account.passwords.password')?.hasError('required')"
         >
-          {{getPasswordErrorMessage()}}
+          {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+        </mat-error>
+        <mat-error *ngIf="form.get('account.passwords.password')?.invalid
+        && !form.get('account.passwords.password')?.hasError('required')
+        && !form.get('account.passwords.password')?.errors?.minlength"
+        >
+          {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="standard">
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
         <mat-error
-          *ngIf="form.get('account.passwords.confirmedPassword')?.invalid">{{getConfirmedPasswordErrorMessage()}}</mat-error>
+          *ngIf="form.get('account.passwords.confirmedPassword')?.hasError('required')">
+          {{ ValidationErrorTexts.NO_VALUE }}
+        </mat-error>
+        <mat-error
+          *ngIf="form.get('account.passwords.confirmedPassword')?.errors?.minlength
+          && !form.get('account.passwords.confirmedPassword')?.hasError('required')"
+        >
+          {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+        </mat-error>
+        <mat-error *ngIf="form.get('account.passwords.confirmedPassword')?.invalid
+        && !form.get('account.passwords.confirmedPassword')?.hasError('required')
+        && !form.get('account.passwords.confirmedPassword')?.errors?.minlength"
+        >
+          {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
+        </mat-error>
       </mat-form-field>
-      <mat-error *ngIf="form.get('account.passwords')?.invalid"
-                 class="error-text">{{getPasswordsErrorMessage()}}</mat-error>
+      <mat-error
+        *ngIf="form.get('account.passwords')?.hasError('isNotEqual')
+        && !this.form.get('account.passwords.confirmedPassword')?.invalid"
+        class="error-text"
+      >
+        {{ ValidationErrorTexts.PASSWORDS_NOT_EQUAL }}
+      </mat-error>
     </div>
   </fieldset>
   <!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
@@ -52,7 +82,9 @@
     <h2>Company</h2>
     <mat-form-field appearance="standard">
       <input matInput placeholder="Name" type="text" formControlName="name">
-      <mat-error *ngIf="form.get('company.name')?.invalid">{{getCompanyNameErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('company.name')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
@@ -62,17 +94,44 @@
         <mat-option
           [value]="CompanyTypes.INDIVIDUAL_ENTREPRENEUR">{{CompanyTypesDisplayName[CompanyTypes.INDIVIDUAL_ENTREPRENEUR]}}</mat-option>
       </mat-select>
-      <mat-error *ngIf="form.get('company.ownership')?.invalid">{{getOwnershipErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('company.ownership')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <input matInput type="number" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
-      <mat-error *ngIf="form.get('company.inn')?.invalid">{{getInnErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('company.inn')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.inn')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.INN_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.inn')?.invalid
+          && !form.get('company.inn')?.hasError('required')
+          && !form.get('company.inn')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.INN_NOT_VALID }}
+      </mat-error>
+
     </mat-form-field>
     <!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
 
     <mat-form-field *ngIf="form.value.company.ownership !== CompanyTypes.INDIVIDUAL_ENTREPRENEUR" appearance="standard">
       <input matInput type="number" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
-      <mat-error *ngIf="form.get('company.kpp')?.invalid">{{getKppErrorMessage()}}</mat-error>
+      <mat-error *ngIf="form.get('company.kpp')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.kpp')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.KPP_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.kpp')?.invalid
+        && !form.get('company.kpp')?.hasError('required')
+        && !form.get('company.kpp')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.INN_NOT_VALID }}
+      </mat-error>
     </mat-form-field>
     <mat-form-field appearance="standard">
       <input matInput type="number" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)"

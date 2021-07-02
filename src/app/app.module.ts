@@ -10,6 +10,7 @@ import { FormComponent } from './components/form/form.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatButtonModule} from "@angular/material/button";
 import { NgxMaskModule, IConfig } from 'ngx-mask';
+import {MaterialModule} from "./modules/material.module";
 
 export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
 
@@ -21,13 +22,10 @@ export const options: Partial<IConfig> | (() => Partial<IConfig>) | null = null;
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSelectModule,
     FormsModule,
     ReactiveFormsModule,
-    MatButtonModule,
     NgxMaskModule.forRoot(),
+    MaterialModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
