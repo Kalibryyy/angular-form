@@ -3,8 +3,11 @@
   <p>Fill-in all the fields</p>
 
   <fieldset class="form__fieldset" formGroupName="account">
+
     <h2>Account</h2>
+
     <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
       <input matInput type="email" formControlName="email">
       <mat-error *ngIf="form.get('account.email')?.hasError('required')">
         {{ ValidationErrorTexts.NO_VALUE }}
@@ -13,9 +16,12 @@
         {{ ValidationErrorTexts.EMAIL_NOT_VALID }}
       </mat-error>
     </mat-form-field>
+
     <div formGroupName="passwords">
+
       <mat-form-field appearance="standard">
-        <input matInput placeholder="Password" type="password" formControlName="password">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password">
         <mat-error
           *ngIf="form.get('account.passwords.password')?.hasError('required')">
           {{ ValidationErrorTexts.NO_VALUE }}
@@ -33,7 +39,9 @@
           {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
         </mat-error>
       </mat-form-field>
+
       <mat-form-field appearance="standard">
+        <mat-label>Password</mat-label>
         <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
         <mat-error
           *ngIf="form.get('account.passwords.confirmedPassword')?.hasError('required')">
@@ -52,6 +60,7 @@
           {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
         </mat-error>
       </mat-form-field>
+
       <mat-error
         *ngIf="form.get('account.passwords')?.hasError('isNotEqual')
         && !this.form.get('account.passwords.confirmedPassword')?.invalid"
@@ -59,33 +68,47 @@
       >
         {{ ValidationErrorTexts.PASSWORDS_NOT_EQUAL }}
       </mat-error>
+
     </div>
+
   </fieldset>
   <!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="profile">
+
     <h2>Profile</h2>
+
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Name" type="text" formControlName="name">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name">
     </mat-form-field>
+
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" formControlName="phone" mask="0(000) 000 0000">
     </mat-form-field>
+
     <mat-form-field appearance="standard">
-      <input matInput placeholder="City" type="text" formControlName="city">
+      <mat-label>City</mat-label>
+      <input matInput type="text" formControlName="city">
     </mat-form-field>
+
   </fieldset>
 
   <!--  <pre>{{form.invalid | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="company">
+
     <h2>Company</h2>
+
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Name" type="text" formControlName="name">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name">
       <mat-error *ngIf="form.get('company.name')?.hasError('required')">
         {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="standard">
       <mat-label>Ownership</mat-label>
       <mat-select formControlName="ownership">
@@ -98,8 +121,10 @@
         {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="standard">
-      <input matInput type="number" placeholder="Taxpayer Identification Number (INN)" formControlName="inn">
+      <mat-label>Taxpayer Identification Number (INN)</mat-label>
+      <input matInput type="number" formControlName="inn">
       <mat-error *ngIf="form.get('company.inn')?.hasError('required')">
         {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
@@ -118,7 +143,8 @@
     <!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
 
     <mat-form-field *ngIf="form.value.company.ownership !== CompanyTypes.INDIVIDUAL_ENTREPRENEUR" appearance="standard">
-      <input matInput type="number" placeholder="Tax Registration Reason Code (KPP)" formControlName="kpp">
+      <mat-label>Tax Registration Reason Code (KPP)</mat-label>
+      <input matInput type="number" formControlName="kpp">
       <mat-error *ngIf="form.get('company.kpp')?.hasError('required')">
         {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
@@ -133,35 +159,73 @@
         {{ ValidationErrorTexts.INN_NOT_VALID }}
       </mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="standard">
-      <input matInput type="number" placeholder="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)"
-             formControlName="okpo" value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)">
-      <mat-error *ngIf="form.get('company.okpo')?.invalid">{{getOkpoErrorMessage()}}</mat-error>
+      <mat-label>All-Russian Classifier of Entrepreneurs and Organizations (OKPO)</mat-label>
+      <input
+        matInput type="number"
+        formControlName="okpo"
+        value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)"
+      >
+      <mat-error *ngIf="form.get('company.okpo')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.okpo')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.OKPO_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.okpo')?.invalid
+        && !form.get('company.okpo')?.hasError('required')
+        && !form.get('company.okpo')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.OKPO_NOT_VALID }}
+      </mat-error>
     </mat-form-field>
+
     <mat-form-field appearance="standard">
-      <input matInput placeholder="Date" type="date" formControlName="date">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="date">
     </mat-form-field>
+
   </fieldset>
 
   <ng-container formArrayName="contacts">
+
     <fieldset class="form__fieldset" *ngFor="let _ of contacts.controls; index as i">
+
       <h2>Contacts</h2>
+
       <ng-container [formGroupName]="i">
+
         <mat-form-field appearance="standard">
+          <mat-label>Name</mat-label>
           <input matInput type="text" formControlName="name">
-          <mat-error *ngIf="form.get('contacts.' + i + '.name')?.invalid">{{getContactsNameErrorMessage(i)}}</mat-error>
+          <mat-error *ngIf="form.get('contacts.' + i + '.name')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="standard">
+          <mat-label>Job Title</mat-label>
           <input matInput type="text" formControlName="job">
-          <mat-error *ngIf="form.get('contacts.' + i + '.job')?.invalid">{{getContactsJobErrorMessage(i)}}</mat-error>
+          <mat-error *ngIf="form.get('contacts.' + i + '.job')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
         </mat-form-field>
+
         <mat-form-field appearance="standard">
-          <input matInput placeholder="Phone" type="tel" formControlName="phone" mask="0(000) 000 0000">
+          <mat-label>Phone</mat-label>
+          <input matInput type="tel" formControlName="phone" mask="0(000) 000 0000">
           <mat-error
-            *ngIf="form.get('contacts.' + i + '.phone')?.invalid">{{getContactsPhoneErrorMessage(i)}}</mat-error>
+            *ngIf="form.get('contacts.' + i + '.phone')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
         </mat-form-field>
+
       </ng-container>
+
     </fieldset>
+
   </ng-container>
 
   <div class="form__add-contacts-container">

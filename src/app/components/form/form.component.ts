@@ -17,7 +17,7 @@ export class FormComponent implements OnInit {
 
   form: FormGroup = new FormGroup({
     account: new FormGroup({
-      email: new FormControl('Email', [
+      email: new FormControl(null, [
         Validators.required,
         Validators.email,
       ]),
@@ -36,15 +36,15 @@ export class FormComponent implements OnInit {
       )
     }),
     profile: new FormGroup({
-      name: new FormControl('Name'),
-      phone: new FormControl('Phone'),
-      city: new FormControl('City',)
+      name: new FormControl(null),
+      phone: new FormControl(null),
+      city: new FormControl(null,)
     }),
     company: new FormGroup({
-      name: new FormControl('Name', [
+      name: new FormControl(null, [
         Validators.required,
       ]),
-      ownership: new FormControl('Legal Entity', [
+      ownership: new FormControl(null, [
         Validators.required,
       ]),
       inn: new FormControl(null, [
@@ -59,7 +59,7 @@ export class FormComponent implements OnInit {
         Validators.required,
         Validators.pattern('[0-9]{8}')
       ]),
-      date: new FormControl('Date')
+      date: new FormControl(null)
     }),
     contacts: new FormArray([]),
   });
@@ -91,10 +91,10 @@ export class FormComponent implements OnInit {
 
   addContact(): void {
     const group = new FormGroup({
-      name: new FormControl('Name', [
+      name: new FormControl(null, [
         Validators.required,
       ]),
-      job: new FormControl('Job Title', [
+      job: new FormControl(null, [
         Validators.required,
       ]),
       phone: new FormControl(null, [
@@ -103,40 +103,6 @@ export class FormComponent implements OnInit {
     });
 
     (this.form.get('contacts') as FormArray).push(group);
-  }
-
-  getOkpoErrorMessage(): string {
-    if (this.form.get('company.okpo')?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    } else if (this.form.get('company.okpo')?.errors?.pattern.requiredPattern) {
-      return ValidationErrorTexts.OKPO_MINLENGTH;
-    }
-
-    return this.form.get('company.kpp') ? ValidationErrorTexts.OKPO_NOT_VALID : '';
-  }
-
-  getContactsNameErrorMessage(i: number): string {
-    if (this.form.get(`contacts.${i}.name`)?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return '';
-  }
-
-  getContactsJobErrorMessage(i: number): string {
-    if (this.form.get(`contacts.${i}.job`)?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return '';
-  }
-
-  getContactsPhoneErrorMessage(i: number): string {
-    if (this.form.get(`contacts.${i}.phone`)?.hasError('required')) {
-      return ValidationErrorTexts.NO_VALUE;
-    }
-
-    return '';
   }
 
   submit(): void {
