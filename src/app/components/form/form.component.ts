@@ -35,7 +35,6 @@ export class FormComponent implements OnInit {
     profile: new FormGroup({
       name: new FormControl(null),
       phone: new FormControl(null, [
-        Validators.required,
         Validators.minLength(11),
       ]),
       city: new FormControl(null,)
