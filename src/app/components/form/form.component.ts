@@ -21,23 +21,23 @@ export class FormComponent implements OnInit {
         Validators.required,
         Validators.email,
       ]),
-      passwords: new FormGroup(
-        {
-          password: new FormControl(null, [
-            Validators.required,
-            Validators.minLength(6),
-          ]),
-          confirmedPassword: new FormControl('', [
-            Validators.required,
-            Validators.minLength(6),
-          ]),
-        },
-        MyValidators.equalPasswords
-      )
-    }),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+      confirmedPassword: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+    },
+      MyValidators.equalPasswords,
+      ),
     profile: new FormGroup({
       name: new FormControl(null),
-      phone: new FormControl(null),
+      phone: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(11),
+      ]),
       city: new FormControl(null,)
     }),
     company: new FormGroup({
@@ -71,7 +71,7 @@ export class FormComponent implements OnInit {
           (this.form.get('company') as FormGroup).removeControl('kpp');
           break;
         case  CompanyTypes.LEGAL_ENTITY:
-          const control = new FormControl(null, [
+          const control: FormControl = new FormControl(null, [
             Validators.required,
             Validators.pattern('[0-9]{9}')
           ]);
@@ -81,7 +81,7 @@ export class FormComponent implements OnInit {
     })
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.toggleControl();
   }
 
@@ -90,7 +90,7 @@ export class FormComponent implements OnInit {
   }
 
   addContact(): void {
-    const group = new FormGroup({
+    const group: FormGroup = new FormGroup({
       name: new FormControl(null, [
         Validators.required,
       ]),
@@ -99,6 +99,7 @@ export class FormComponent implements OnInit {
       ]),
       phone: new FormControl(null, [
         Validators.required,
+        Validators.minLength(11)
       ])
     });
 

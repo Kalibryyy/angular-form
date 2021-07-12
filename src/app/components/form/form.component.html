@@ -17,62 +17,58 @@
       </mat-error>
     </mat-form-field>
 
-    <div formGroupName="passwords">
-
-      <mat-form-field appearance="standard">
-        <mat-label>Password</mat-label>
-        <input matInput type="password" formControlName="password">
-        <mat-error
-          *ngIf="form.get('account.passwords.password')?.hasError('required')">
-          {{ ValidationErrorTexts.NO_VALUE }}
-        </mat-error>
-        <mat-error
-          *ngIf="form.get('account.passwords.password')?.errors?.minlength
-          && !form.get('account.passwords.password')?.hasError('required')"
-        >
-          {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
-        </mat-error>
-        <mat-error *ngIf="form.get('account.passwords.password')?.invalid
-        && !form.get('account.passwords.password')?.hasError('required')
-        && !form.get('account.passwords.password')?.errors?.minlength"
-        >
-          {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="standard">
-        <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" type="password" formControlName="confirmedPassword">
-        <mat-error
-          *ngIf="form.get('account.passwords.confirmedPassword')?.hasError('required')">
-          {{ ValidationErrorTexts.NO_VALUE }}
-        </mat-error>
-        <mat-error
-          *ngIf="form.get('account.passwords.confirmedPassword')?.errors?.minlength
-          && !form.get('account.passwords.confirmedPassword')?.hasError('required')"
-        >
-          {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
-        </mat-error>
-        <mat-error *ngIf="form.get('account.passwords.confirmedPassword')?.invalid
-        && !form.get('account.passwords.confirmedPassword')?.hasError('required')
-        && !form.get('account.passwords.confirmedPassword')?.errors?.minlength"
-        >
-          {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
-        </mat-error>
-      </mat-form-field>
-
+    <mat-form-field appearance="standard">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
       <mat-error
-        *ngIf="form.get('account.passwords')?.hasError('isNotEqual')
-        && !this.form.get('account.passwords.confirmedPassword')?.invalid"
-        class="error-text"
-      >
-        {{ ValidationErrorTexts.PASSWORDS_NOT_EQUAL }}
+        *ngIf="form.get('account.password')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
       </mat-error>
+      <mat-error
+        *ngIf="form.get('account.password')?.errors?.minlength
+          && !form.get('account.password')?.hasError('required')"
+      >
+        {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.password')?.invalid
+        && !form.get('account.password')?.hasError('required')
+        && !form.get('account.password')?.errors?.minlength"
+      >
+        {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
 
-    </div>
+    <mat-form-field appearance="standard">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="confirmedPassword">
+      <mat-error
+        *ngIf="form.get('account.confirmedPassword')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('account.confirmedPassword')?.errors?.minlength
+          && !form.get('account.confirmedPassword')?.hasError('required')"
+      >
+        {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.confirmedPassword')?.invalid
+        && !form.get('account.confirmedPassword')?.hasError('required')
+        && !form.get('account.confirmedPassword')?.errors?.minlength"
+      >
+        {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-error
+      *ngIf="form.get('account')?.hasError('isNotEqual')
+        && !this.form.get('account.confirmedPassword')?.invalid"
+      class="error-text"
+    >
+      {{ ValidationErrorTexts.PASSWORDS_NOT_EQUAL }}
+    </mat-error>
 
   </fieldset>
-  <!--  <pre>{{form.get('account.passwords.password')?.errors | json}}</pre>-->
+  <!--  <pre>{{form.get('account.password')?.errors | json}}</pre>-->
 
   <fieldset class="form__fieldset" formGroupName="profile">
 
@@ -86,6 +82,14 @@
     <mat-form-field appearance="standard">
       <mat-label>Phone</mat-label>
       <input matInput type="tel" formControlName="phone" mask="0(000) 000 0000">
+      <mat-error
+        *ngIf="form.get('profile.phone')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('profile.phone')?.errors?.minlength">
+        {{ ValidationErrorTexts.PHONE_MINLENGTH }}
+      </mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="standard">
@@ -219,6 +223,10 @@
           <mat-error
             *ngIf="form.get('contacts.' + i + '.phone')?.hasError('required')">
             {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('contacts.' + i + '.phone')?.errors?.minlength">
+            {{ ValidationErrorTexts.PHONE_MINLENGTH }}
           </mat-error>
         </mat-form-field>
 

@@ -20,4 +20,5 @@ export enum ValidationErrorTexts {
   KPP_NOT_VALID = 'Not a valid KPP',
   OKPO_MINLENGTH = 'The OKPO has to be 8 characters long',
   OKPO_NOT_VALID = 'Not a valid KPP',
+  PHONE_MINLENGTH = 'The phone has to be minimum 11 characters long',
 }
