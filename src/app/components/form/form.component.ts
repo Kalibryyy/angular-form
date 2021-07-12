@@ -25,7 +25,7 @@ export class FormComponent implements OnInit {
         Validators.required,
         Validators.minLength(6),
       ]),
-      confirmedPassword: new FormControl('', [
+      confirmedPassword: new FormControl(null, [
         Validators.required,
         Validators.minLength(6),
       ]),
