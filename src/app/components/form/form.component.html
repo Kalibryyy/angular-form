@@ -1,0 +1,244 @@
+<form class="form" [formGroup]="form" (ngSubmit)="submit()" #formDirective="ngForm">
+  <h1 class="form__title">Sign Up</h1>
+  <p>Fill-in all the fields</p>
+
+  <fieldset class="form__fieldset" formGroupName="account">
+
+    <h2>Account</h2>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Email</mat-label>
+      <input matInput type="email" formControlName="email">
+      <mat-error *ngIf="form.get('account.email')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.email')?.invalid && !form.get('account.email')?.hasError('required')">
+        {{ ValidationErrorTexts.EMAIL_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+      <mat-error
+        *ngIf="form.get('account.password')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('account.password')?.errors?.minlength
+          && !form.get('account.password')?.hasError('required')"
+      >
+        {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.password')?.invalid
+        && !form.get('account.password')?.hasError('required')
+        && !form.get('account.password')?.errors?.minlength"
+      >
+        {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="confirmedPassword">
+      <mat-error
+        *ngIf="form.get('account.confirmedPassword')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('account.confirmedPassword')?.errors?.minlength
+          && !form.get('account.confirmedPassword')?.hasError('required')"
+      >
+        {{ ValidationErrorTexts.PASSWORD_MINLENGTH }}
+      </mat-error>
+      <mat-error *ngIf="form.get('account.confirmedPassword')?.invalid
+        && !form.get('account.confirmedPassword')?.hasError('required')
+        && !form.get('account.confirmedPassword')?.errors?.minlength"
+      >
+        {{ ValidationErrorTexts.PASSWORD_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-error
+      *ngIf="form.get('account')?.hasError('isNotEqual')
+        && !this.form.get('account.confirmedPassword')?.invalid"
+      class="error-text"
+    >
+      {{ ValidationErrorTexts.PASSWORDS_NOT_EQUAL }}
+    </mat-error>
+
+  </fieldset>
+  <!--  <pre>{{form.get('account.password')?.errors | json}}</pre>-->
+
+  <fieldset class="form__fieldset" formGroupName="profile">
+
+    <h2>Profile</h2>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name">
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Phone</mat-label>
+      <input matInput type="tel" formControlName="phone" mask="0(000) 000 0000">
+      <mat-error
+        *ngIf="form.get('profile.phone')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('profile.phone')?.errors?.minlength">
+        {{ ValidationErrorTexts.PHONE_MINLENGTH }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field appearance="standard">
+      <mat-label>City</mat-label>
+      <input matInput type="text" formControlName="city">
+    </mat-form-field>
+
+  </fieldset>
+
+  <!--  <pre>{{form.invalid | json}}</pre>-->
+
+  <fieldset class="form__fieldset" formGroupName="company">
+
+    <h2>Company</h2>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Name</mat-label>
+      <input matInput type="text" formControlName="name">
+      <mat-error *ngIf="form.get('company.name')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Ownership</mat-label>
+      <mat-select formControlName="ownership">
+        <mat-option
+          [value]="CompanyTypes.LEGAL_ENTITY">{{CompanyTypesDisplayName[CompanyTypes.LEGAL_ENTITY]}}</mat-option>
+        <mat-option
+          [value]="CompanyTypes.INDIVIDUAL_ENTREPRENEUR">{{CompanyTypesDisplayName[CompanyTypes.INDIVIDUAL_ENTREPRENEUR]}}</mat-option>
+      </mat-select>
+      <mat-error *ngIf="form.get('company.ownership')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Taxpayer Identification Number (INN)</mat-label>
+      <input matInput type="number" formControlName="inn">
+      <mat-error *ngIf="form.get('company.inn')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.inn')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.INN_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.inn')?.invalid
+          && !form.get('company.inn')?.hasError('required')
+          && !form.get('company.inn')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.INN_NOT_VALID }}
+      </mat-error>
+
+    </mat-form-field>
+    <!--    <pre>{{form.get('company.inn')?.errors | json}}</pre>-->
+
+    <mat-form-field *ngIf="form.value.company.ownership !== CompanyTypes.INDIVIDUAL_ENTREPRENEUR" appearance="standard">
+      <mat-label>Tax Registration Reason Code (KPP)</mat-label>
+      <input matInput type="number" formControlName="kpp">
+      <mat-error *ngIf="form.get('company.kpp')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.kpp')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.KPP_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.kpp')?.invalid
+        && !form.get('company.kpp')?.hasError('required')
+        && !form.get('company.kpp')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.INN_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>All-Russian Classifier of Entrepreneurs and Organizations (OKPO)</mat-label>
+      <input
+        matInput type="number"
+        formControlName="okpo"
+        value="All-Russian Classifier of Entrepreneurs and Organizations (OKPO)"
+      >
+      <mat-error *ngIf="form.get('company.okpo')?.hasError('required')">
+        {{ ValidationErrorTexts.NO_VALUE }}
+      </mat-error>
+      <mat-error *ngIf="form.get('company.okpo')?.errors?.pattern?.requiredPattern">
+        {{ ValidationErrorTexts.OKPO_MINLENGTH }}
+      </mat-error>
+      <mat-error
+        *ngIf="form.get('company.okpo')?.invalid
+        && !form.get('company.okpo')?.hasError('required')
+        && !form.get('company.okpo')?.errors?.pattern?.requiredPattern"
+      >
+        {{ ValidationErrorTexts.OKPO_NOT_VALID }}
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="standard">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" formControlName="date">
+    </mat-form-field>
+
+  </fieldset>
+
+  <ng-container formArrayName="contacts">
+
+    <fieldset class="form__fieldset" *ngFor="let control of contacts.controls; index as i">
+
+      <h2>Contacts</h2>
+
+      <ng-container [formGroupName]="i">
+
+        <mat-form-field appearance="standard">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" formControlName="name">
+          <mat-error *ngIf="form.get('contacts.' + i + '.name')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Job Title</mat-label>
+          <input matInput type="text" formControlName="job">
+          <mat-error *ngIf="form.get('contacts.' + i + '.job')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+          <mat-label>Phone</mat-label>
+          <input matInput type="tel" formControlName="phone" mask="0(000) 000 0000">
+          <mat-error
+            *ngIf="form.get('contacts.' + i + '.phone')?.hasError('required')">
+            {{ ValidationErrorTexts.NO_VALUE }}
+          </mat-error>
+          <mat-error
+            *ngIf="form.get('contacts.' + i + '.phone')?.errors?.minlength">
+            {{ ValidationErrorTexts.PHONE_MINLENGTH }}
+          </mat-error>
+        </mat-form-field>
+
+      </ng-container>
+
+    </fieldset>
+
+  </ng-container>
+
+  <div class="form__add-contacts-container">
+    <h2>Contacts</h2>
+    <button type="button" mat-stroked-button (click)="addContact()">Add contact</button>
+  </div>
+  <button type="submit" mat-flat-button color="primary" [disabled]="form.invalid">Sign up</button>
+</form>
+
