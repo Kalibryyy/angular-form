@@ -1,4 +1,4 @@
-<form class="form" [formGroup]="form" (ngSubmit)="submit()">
+<form class="form" [formGroup]="form" (ngSubmit)="submit()" #formDirective="ngForm">
   <h1 class="form__title">Sign Up</h1>
   <p>Fill-in all the fields</p>
 
@@ -91,7 +91,6 @@
         {{ ValidationErrorTexts.PHONE_MINLENGTH }}
       </mat-error>
     </mat-form-field>
-
     <mat-form-field appearance="standard">
       <mat-label>City</mat-label>
       <input matInput type="text" formControlName="city">
@@ -195,7 +194,7 @@
 
   <ng-container formArrayName="contacts">
 
-    <fieldset class="form__fieldset" *ngFor="let _ of contacts.controls; index as i">
+    <fieldset class="form__fieldset" *ngFor="let control of contacts.controls; index as i">
 
       <h2>Contacts</h2>
 

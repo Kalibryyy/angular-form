@@ -1,5 +1,5 @@
-import {Component, OnInit,} from '@angular/core';
-import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {Component, OnInit, ViewChild,} from '@angular/core';
+import {FormArray, FormControl, FormGroup, FormGroupDirective, Validators} from "@angular/forms";
 import {MyValidators} from "../../validators/my.validators";
 import {CompanyTypes, CompanyTypesDisplayName, ValidationErrorTexts} from "../../enums/constants";
 
@@ -11,9 +11,12 @@ import {CompanyTypes, CompanyTypesDisplayName, ValidationErrorTexts} from "../..
 
 export class FormComponent implements OnInit {
 
+  @ViewChild('formDirective') formDirective: FormGroupDirective;
+
   CompanyTypes = CompanyTypes;
   CompanyTypesDisplayName = CompanyTypesDisplayName;
   ValidationErrorTexts = ValidationErrorTexts;
+
 
   form: FormGroup = new FormGroup({
     account: new FormGroup({
@@ -107,8 +110,10 @@ export class FormComponent implements OnInit {
 
   submit(): void {
     if (this.form.valid) {
-      const formData = {...this.form.value};
+      const formData = this.form.value;
       console.log('Form data: ', formData);
+      this.form.reset();
+      this.formDirective.resetForm();
     }
   }
 }
